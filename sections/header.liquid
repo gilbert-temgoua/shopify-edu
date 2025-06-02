@@ -432,8 +432,17 @@
     justify-content: flex-end;
     grid-area: right;
 
+    &:dir(rtl) {
+      flex-direction: row-reverse;
+      justify-content: flex-start;
+    }
+
     .overflow-menu::part(list) {
-      justify-content: flex-end;
+      justify-content: flex-start;
+
+      &:dir(rtl) {
+        flex-direction: row-reverse;
+      }
     }
   }
 
@@ -451,6 +460,10 @@
 
     /* Mobile layout */
     --header-mobile-bookend: 44px;
+
+    /* &:dir(rtl) {
+      grid-template-areas: 'right center left';
+    } */
 
     /* If menu is in center column */
     &:has(.header__column--center header-menu) {
