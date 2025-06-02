@@ -9,7 +9,6 @@ jobs:
   deploy:
     name: Deploy
     runs-on: ubuntu-latest
-
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v3
@@ -20,20 +19,11 @@ jobs:
         run: npm install -g @shopify/cli
 
       - name: Upload theme
-        run:
-          if [ "${{ github.head_ref || github.ref_name }}" == "main" ]; then
-            shopify theme push \
-            --json
+        run: |
+          shopify theme push \
+            --json \
             --ignore config/settings_data.json templates/*.json sections/*.json \
-            --theme ${{ vars.PRODUCTION_THEME_NAME }} \
+            --theme Horizon \
             --store ${{ secrets.SHOPIFY_STORE }} \
             --password ${{ secrets.SHOPIFY_CLI_THEME_TOKEN }} \
             --allow-live
-          elif [ "${{ github.head_ref || github.ref_name }}" == "development" ]; then
-            shopify theme push \
-            --json \
-            --ignore config/settings_data.json templates/*.json sections/*.json \
-            --theme ${{ vars.DEVELOPMENT_THEME_NAME }} \
-            --store ${{ secrets.SHOPIFY_STORE }} \
-            --password ${{ secrets.SHOPIFY_CLI_THEME_TOKEN }}
-          fi
