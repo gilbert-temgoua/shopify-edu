@@ -432,8 +432,17 @@
     justify-content: flex-end;
     grid-area: right;
 
+    &:dir(rtl) {
+      flex-direction: row-reverse;
+      justify-content: flex-start;
+    }
+
     .overflow-menu::part(list) {
-      justify-content: flex-end;
+      justify-content: flex-start;
+
+      &:dir(rtl) {
+        flex-direction: row-reverse;
+      }
     }
   }
 

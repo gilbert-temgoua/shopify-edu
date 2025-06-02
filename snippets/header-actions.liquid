@@ -183,6 +183,10 @@
   header-actions {
     display: flex;
 
+    &:dir(rtl) {
+      flex-direction: row-reverse;
+    }
+
     @media screen and (width < 750px) {
       justify-self: flex-end;
     }
