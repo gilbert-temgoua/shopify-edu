@@ -8,6 +8,7 @@
   @param {string} icon_only_on_mobile - Whether the icon is only visible on mobile
   @param {string} text_only_on_mobile - Whether the text is only visible on mobile
   @param {string} class - The class of the button
+  @param {string} icon_only - Whether the button only shows the icon
 {% enddoc %}
 
 {% stylesheet %}
@@ -42,6 +43,19 @@
 
   .atc-added .add-to-cart-text--added {
     animation-name: atc-slide-in;
+  }
+
+  .button.icon-only {
+    padding: 3px;
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+    border: none;
+    border-radius: 5px;
+
+    &:hover {
+      background-color: var(--color-foreground);
+      color: var(--color-background);
+    }
   }
 
   @keyframes atc-slide-in {
@@ -87,7 +101,7 @@
     name="add"
     ref="addToCartButton"
     on:click="/handleClick"
-    class="button {{ class }}"
+    class="button {{ class }} {% if icon_only %}icon-only{% endif %}"
     {% unless can_add_to_cart %}
       disabled
     {% endunless %}
@@ -100,20 +114,24 @@
           {{- 'icon-add-to-cart.svg' | inline_asset_content -}}
         </span>
       {% endif %}
+      {% unless icon_only %}
       <span class="add-to-cart-text__content{% if icon_only_on_mobile %} is-visually-hidden-mobile{% endif %}">
         {{- add_to_cart_text | default: default_add_to_cart_text -}}
       </span>
+      {% endunless %}
     </span>
-    <span
-      aria-hidden="true"
-      class="add-to-cart-text--added"
-    >
-      <span class="svg-wrapper add-to-cart-icon--added">
-        {{- 'icon-checkmark.svg' | inline_asset_content -}}
+    {% unless icon_only %}
+      <span
+        aria-hidden="true"
+        class="add-to-cart-text--added"
+      >
+        <span class="svg-wrapper add-to-cart-icon--added">
+          {{- 'icon-checkmark.svg' | inline_asset_content -}}
+        </span>
+        <span class="{% if icon_only_on_mobile %}is-visually-hidden-mobile{% endif %}">
+          {{- 'actions.added' | t -}}
+        </span>
       </span>
-      <span class="{% if icon_only_on_mobile %}is-visually-hidden-mobile{% endif %}">
-        {{- 'actions.added' | t -}}
-      </span>
-    </span>
+    {% endunless %}
   </button>
 </add-to-cart-component>

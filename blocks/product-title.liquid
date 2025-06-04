@@ -1,12 +1,49 @@
+{%  stylesheet %}
+  .product-title-wrapper {
+    display: flex;
+    gap: 5px;
+    align-items: flex-end;
 
+    p {
+      flex-grow: 1;
+    }
+
+    &.text-only {
+      display: contents;
+    }
+
+    .add-to-cart-icon.svg-wrapper {
+      width: 1.5rem;
+      height: 1.5rem;
+
+      svg {
+        width: 100%;
+        height: 100%;
+      }
+    }
+  }
+{% endstylesheet %}
+{% liquid
+  assign product = block.settings.product
+  assign can_add_to_cart = false
+
+  if product.available
+    assign can_add_to_cart = true
+  endif
+%}
 
 {% if block.settings.product == blank and request.design_mode %}
   {% assign text = 'placeholders.product_title' | t %}
   {% assign product_title = '<p>' | append: text | append: '</p>' %}
   {% render 'text', fallback_text: product_title, block: block %}
 {% elsif block.settings.product != blank %}
-  {% assign product_title = '<p>' | append: block.settings.product.title | append: '</p>' %}
-  {% render 'text', fallback_text: product_title, block: block %}
+  <div class="product-title-wrapper {% if can_add_to_cart%}title-only{% endif %} }">
+    {% assign product_title = '<p>' | append: block.settings.product.title | append: '</p>' %}
+    {% render 'text', fallback_text: product_title, block: block %}
+    {% if can_add_to_cart and product.has_only_default_variant %}
+      {% render 'add-to-cart-button', icon_only: true, product: product, can_add_to_cart: can_add_to_cart %}
+    {% endif %}
+  </div>
 {% endif %}
 
 {% schema %}
