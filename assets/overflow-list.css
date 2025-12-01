@@ -10,6 +10,10 @@
   justify-content: var(--overflow-list-alignment);
   column-gap: 1rem;
 
+  &:dir(rtl) {
+    justify-content: flex-end;
+  }
+
   @media (max-width: 749px) {
     justify-content: var(--overflow-list-alignment-mobile);
   }

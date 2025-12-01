@@ -464,8 +464,16 @@
     justify-content: flex-end;
     grid-area: right;
 
+    &:dir(rtl) {
+      justify-content: flex-start;
+    }
+
     .overflow-menu::part(list) {
-      justify-content: flex-end;
+      justify-content: flex-start;
+
+      &:dir(rtl) {
+        flex-direction: row-reverse;
+      }
     }
   }
 
@@ -496,7 +504,9 @@
       @media screen and (min-width: 750px) {
         --header-template-columns: var(--header-left) var(--header-right);
 
-        grid-template-areas: 'left right';
+        &:dir(ltr) {
+          grid-template-areas: 'left right';
+        }
       }
 
       /* If the header-menu is in the right column */
