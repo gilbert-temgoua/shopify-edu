@@ -1,4 +1,12 @@
-
+{% liquid
+  assign show_title_quick_add = false
+  if closest.product != blank and closest.product.available and closest.product.has_only_default_variant
+    assign show_title_quick_add = true
+    assign variant_to_use = closest.product.selected_or_first_available_variant
+    assign can_add_to_cart = variant_to_use.available
+    assign product_form_id = 'ProductTitle-QuickAdd-' | append: closest.product.id | append: '-' | append: block.id
+  endif
+%}
 
 {% if closest.product == blank %}
   {% assign text = 'placeholders.product_title' | t %}
@@ -6,14 +14,108 @@
   {% render 'text', fallback_text: product_title, block: block %}
 {% elsif closest.product != blank %}
   {% assign product_title = '<p>' | append: closest.product.title | append: '</p>' %}
-  <a
-    class="contents user-select-text"
-    ref="productTitleLink"
-    href="{% render 'product-card-variant-url', product: closest.product %}"
-  >
-    {% render 'text', fallback_text: product_title, block: block %}
-  </a>
+  <div class="product-title__wrapper{% if show_title_quick_add %} product-title__wrapper--with-icon{% endif %}">
+    <a
+      class="contents user-select-text"
+      ref="productTitleLink"
+      href="{% render 'product-card-variant-url', product: closest.product %}"
+    >
+      {% render 'text', fallback_text: product_title, block: block %}
+    </a>
+    {% if show_title_quick_add %}
+      <quick-add-component class="product-title__quick-add" data-product-title="{{ closest.product.title }}">
+        <product-form-component
+          data-section-id="{{ section.id }}"
+          data-product-id="{{ closest.product.id }}"
+          on:submit="/handleSubmit"
+        >
+          <div class="visually-hidden" aria-live="assertive" role="status" aria-atomic="true" ref="liveRegion"></div>
+          {%- form 'product', closest.product, id: product_form_id, novalidate: 'novalidate', data-type: 'add-to-cart-form' -%}
+            <input type="hidden" name="id" ref="variantId" value="{{ variant_to_use.id }}"{% unless can_add_to_cart %} disabled{% endunless %}>
+            <input type="hidden" name="quantity" value="{% if variant_to_use.quantity_rule.min %}{{ variant_to_use.quantity_rule.min }}{% else %}1{% endif %}">
+            
+            {% if closest.product.variants.size == 1 %}
+              {%- comment -%} Single variant: direct add to cart {%- endcomment -%}
+              <add-to-cart-component ref="addToCartButtonContainer">
+                <button
+                  type="submit"
+                  name="add"
+                  ref="addToCartButton"
+                  on:click="/handleClick"
+                  class="product-title__cart-icon"
+                  {% unless can_add_to_cart %}disabled{% endunless %}
+                  aria-label="{{ 'actions.add_to_cart' | t }}"
+                >
+                  <span class="svg-wrapper">{{ 'icon-add-to-cart.svg' | inline_asset_content }}</span>
+                </button>
+              </add-to-cart-component>
+            {% else %}
+              {%- comment -%} Multi-variant: open quick-add modal {%- endcomment -%}
+              <button
+                type="button"
+                name="add"
+                on:click="quick-add-component/handleClick"
+                class="product-title__cart-icon"
+                aria-label="{{ 'actions.add_to_cart' | t }}"
+              >
+                <span class="svg-wrapper">{{ 'icon-add-to-cart.svg' | inline_asset_content }}</span>
+              </button>
+            {% endif %}
+          {%- endform -%}
+        </product-form-component>
+      </quick-add-component>
+    {% endif %}
+  </div>
 {% endif %}
+
+{% stylesheet %}
+  .product-title__wrapper {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--gap-xs);
+  }
+
+  .product-title__quick-add {
+    display: inline-flex;
+    align-items: center;
+    flex-shrink: 0;
+  }
+
+  .product-title__cart-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--padding-2xs);
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    color: currentColor;
+    transition: opacity var(--animation-speed);
+    line-height: 1;
+  }
+
+  .product-title__cart-icon:hover {
+    opacity: 0.7;
+  }
+
+  .product-title__cart-icon:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+
+  .product-title__cart-icon .svg-wrapper {
+    width: 1.2em;
+    height: 1.2em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .product-title__cart-icon .svg-wrapper svg {
+    width: 100%;
+    height: 100%;
+  }
+{% endstylesheet %}
 
 {% schema %}
 {
