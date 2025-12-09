@@ -134,30 +134,20 @@
             can_add_to_cart: can_add_to_cart,
             add_to_cart_text: add_to_cart_text
           %}
-
+          {% content_for 'blocks' %}
           {% capture out_of_stock_colors %}
             {% for color in product.options_by_name['Color'].values %}
-              {% assign color_has_available = false %}
               {% for variant in product.variants %}
-                {% if variant.option1 == color and variant.available %}
-                  {% assign color_has_available = true %}
-                  {% break %}
-                {% endif %}
+                {% if variant.option1 == color and variant.inventory_quantity == 0 %}{{ color }}|{% endif %}
               {% endfor %}
-              {% if color_has_available == false %}{{ color }}|{% endif %}
             {% endfor %}
           {% endcapture %}
 
           {% capture out_of_stock_sizes %}
             {% for size in product.options_by_name['Size'].values %}
-              {% assign size_has_available = false %}
               {% for variant in product.variants %}
-                {% if variant.option2 == size and variant.available %}
-                  {% assign size_has_available = true %}
-                  {% break %}
-                {% endif %}
+                {% if variant.option2 == size and variant.inventory_quantity == 0 %}{{ size }}|{% endif %}
               {% endfor %}
-              {% if size_has_available == true %}{{ size }}|{% endif %}
             {% endfor %}
           {% endcapture %}
 
