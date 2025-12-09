@@ -1,4 +1,3 @@
-
 {% liquid
   assign block_settings = block.settings
   assign product = closest.product
@@ -135,6 +134,65 @@
             can_add_to_cart: can_add_to_cart,
             add_to_cart_text: add_to_cart_text
           %}
+
+          {% capture out_of_stock_colors %}
+            {% for color in product.options_by_name['Color'].values %}
+              {% assign color_has_available = false %}
+              {% for variant in product.variants %}
+                {% if variant.option1 == color and variant.available %}
+                  {% assign color_has_available = true %}
+                  {% break %}
+                {% endif %}
+              {% endfor %}
+              {% if color_has_available == false %}{{ color }}|{% endif %}
+            {% endfor %}
+          {% endcapture %}
+
+          {% capture out_of_stock_sizes %}
+            {% for size in product.options_by_name['Size'].values %}
+              {% assign size_has_available = false %}
+              {% for variant in product.variants %}
+                {% if variant.option2 == size and variant.available %}
+                  {% assign size_has_available = true %}
+                  {% break %}
+                {% endif %}
+              {% endfor %}
+              {% if size_has_available == true %}{{ size }}|{% endif %}
+            {% endfor %}
+          {% endcapture %}
+
+          {% assign colors_array = out_of_stock_colors | split: '|' | compact %}
+          {% assign sizes_array = out_of_stock_sizes | split: '|' | compact %}
+
+          {% if colors_array.size > 0 or sizes_array.size > 0 %}
+            <div class="out-of-stock-options" style="margin-top: 16px;">
+              {% if colors_array.size > 0 %}
+                <div class="out-of-stock-group">
+                  <p class="out-of-stock-label">Out of stock colors:</p>
+                  <ol class="out-of-stock-list">
+                    {% for color in colors_array %}
+                      {% if color != blank %}
+                        <li class="out-of-stock-option">{{ color }}</li>
+                      {% endif %}
+                    {% endfor %}
+                  </ol>
+                </div>
+              {% endif %}
+
+              {% if sizes_array.size > 0 %}
+                <div class="out-of-stock-group">
+                  <p class="out-of-stock-label">Out of stock sizes:</p>
+                  <ol class="out-of-stock-list">
+                    {% for size in sizes_array %}
+                      {% if size != blank %}
+                        <li class="out-of-stock-option">{{ size }}</li>
+                      {% endif %}
+                    {% endfor %}
+                  </ol>
+                </div>
+              {% endif %}
+            </div>
+          {% endif %}
 
           {% content_for 'block',
             type: 'accelerated-checkout',
@@ -487,6 +545,21 @@
   .pickup-location__close-button {
     top: calc(var(--padding-2xl) - (var(--icon-size-xs) / 2));
     right: calc(var(--padding-2xl) - var(--icon-size-xs));
+  }
+
+  .out-of-stock-variants {
+    margin-top: 12px;
+    font-family: var(--font-body--family);
+  }
+
+  .out-of-stock-label {
+    font-size: var(--font-size--sm);
+    color: var(--color-text-secondary);
+  }
+
+  .out-of-stock-list {
+    padding: 0;
+    margin-left: 16px;
   }
 {% endstylesheet %}
 
