@@ -299,6 +299,12 @@
     border-color: var(--error-color);
   }
 
+  .form-input:disabled {
+    background: #acb2b8a6;
+    cursor: not-allowed;
+    color: rgb(120 117 117);
+  }
+
   .password-input-wrapper {
     position: relative;
   }
@@ -839,7 +845,7 @@
       }
       
       if (!isValid) {
-        console.error('Form validation failed. Please correct the errors and try again.');
+        this.showMessage('error', 'Form validation failed. Please correct the errors and try again.');
         return;
       }
       
@@ -861,23 +867,27 @@
       };
       
       this.setFormLocked(true);
-      
-      try {
-        const response = await this.submitRegistration(formData);
-        
-        if (response.success) {
-          this.showMessage('success');
-          console.log('Registration successful:', response);
-        } else {
-          this.showMessage('error', response.message || 'Registration failed. Please try again.');
-          console.error('Registration failed:', response);
+
+      timeout(() => {
+        console.log('Registration is taking longer than expected...');
+              
+        try {
+          const response = await this.submitRegistration(formData);
+          
+          if (response.success) {
+            this.showMessage('success');
+            console.log('Registration successful:', response);
+          } else {
+            this.showMessage('error', response.message || 'Registration failed. Please try again.');
+            console.error('Registration failed:', response);
+          }
+        } catch (error) {
+          this.showMessage('error', 'Network error. Please check your connection and try again.');
+          console.error('Registration error:', error);
+        } finally {
+          this.setFormLocked(false);
         }
-      } catch (error) {
-        this.showMessage('error', 'Network error. Please check your connection and try again.');
-        console.error('Registration error:', error);
-      } finally {
-        this.setFormLocked(false);
-      }
+      }, 20000);
     }
     
     /**
