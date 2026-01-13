@@ -311,11 +311,24 @@
       "settings": {
         "heading": "Frequently asked questions"
       }
+    },
+    "registration_form_VGBbpn": {
+      "type": "registration-form",
+      "name": "Registration Form",
+      "settings": {
+        "title": "Create Account",
+        "subtitle": "Join us",
+        "show_password_requirements": true,
+        "primary_color": "#2563eb",
+        "success_color": "#10b981",
+        "error_color": "#dc2626"
+      }
     }
   },
   "order": [
     "hero_jVaWmY",
     "product_list_fa6P9H",
-    "faq_4GcxYH"
+    "faq_4GcxYH",
+    "registration_form_VGBbpn"
   ]
 }

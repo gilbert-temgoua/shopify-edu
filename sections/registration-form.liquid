@@ -621,8 +621,8 @@ class RegistrationForm {
     this.errorMessage = /** @type {HTMLElement|null} */ (document.getElementById('errorMessage'));
     this.errorText = /** @type {HTMLElement|null} */ (document.getElementById('errorText'));
     
-    this.STOREFRONT_ACCESS_TOKEN = '2775ca5fde6e8747d9f412bcc248575d';
-    this.API_VERSION = '2024-01';
+    this.STOREFRONT_ACCESS_TOKEN = '9b9b701e81ad1e67d0bfa9450dc9ff6a';
+    this.API_VERSION = '2025-01';
     this.SHOP_DOMAIN = /** @type {any} */ (window).SHOP_DOMAIN || this.extractShopDomain(); // Get from Liquid or extract
     
     this.init();
@@ -963,7 +963,7 @@ class RegistrationForm {
         method: 'POST',
         headers: new Headers({
           'Content-Type': 'application/json',
-          'X-Shopify-Storefront-Access-Token': String(this.STOREFRONT_ACCESS_TOKEN)
+          // 'X-Shopify-Storefront-Access-Token': String(this.STOREFRONT_ACCESS_TOKEN)
         }),
         body: JSON.stringify({
           query: mutation,
