@@ -292,7 +292,6 @@
   .form-input:focus {
     outline: none;
     border-color: var(--primary-color);
-    box-shadow: 0 0 0 3px color-mix(in srgb, var(--primary-color) 20%, transparent);
   }
 
   .form-input.error {
@@ -554,14 +553,6 @@
     .registration-title {
       font-size: 1.5rem;
     }
-  }
-
-  .form-input:focus-visible,
-  .password-toggle:focus-visible,
-  .submit-button:focus-visible,
-  .link:focus-visible {
-    outline: 2px solid var(--primary-color);
-    outline-offset: 2px;
   }
 {% endstylesheet %}
 
@@ -868,34 +859,25 @@
       
       this.setFormLocked(true);
 
-      timeout(() => {
-        console.log('Registration is taking longer than expected...');
-              
-        try {
-          const response = await this.submitRegistration(formData);
-          
-          if (response.success) {
-            this.showMessage('success');
-            console.log('Registration successful:', response);
-          } else {
-            this.showMessage('error', response.message || 'Registration failed. Please try again.');
-            console.error('Registration failed:', response);
-          }
-        } catch (error) {
-          this.showMessage('error', 'Network error. Please check your connection and try again.');
-          console.error('Registration error:', error);
-        } finally {
-          this.setFormLocked(false);
+      try {
+        const response = await this.submitRegistration(formData);
+        
+        if (response.success) {
+          this.showMessage('success');
+        } else {
+          this.showMessage('error', response.message || 'Registration failed. Please try again.');
         }
-      }, 20000);
+      } catch (error) {
+        this.showMessage('error', 'Network error. Please check your connection and try again.');
+      } finally {
+        this.setFormLocked(false);
+      }
     }
     
     /**
      * @param {RegistrationFormData} formData
      */
     async submitRegistration(formData) {
-      console.log('Submitting registration data:', formData);
-      
       const mutation = `
         mutation customerCreate($input: CustomerCreateInput!) {
           customerCreate(input: $input) {
@@ -928,8 +910,6 @@
         const shopDomain = this.SHOP_DOMAIN;
         const apiUrl = `https://${shopDomain}/api/${this.API_VERSION}/graphql.json`;
         
-        console.log('Making request to:', apiUrl);
-        
         const response = await fetch(apiUrl, {
           method: 'POST',
           headers: new Headers({
@@ -947,7 +927,6 @@
         }
         
         const result = await response.json();
-        console.log('Shopify GraphQL response:', result);
         
         if (result.errors) {
           console.error('GraphQL errors:', result.errors);
