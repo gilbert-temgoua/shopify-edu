@@ -319,9 +319,9 @@
         "title": "Create Account",
         "subtitle": "Join us",
         "show_password_requirements": true,
-        "primary_color": "#2563eb",
+        "primary_color": "#760909",
         "success_color": "#10b981",
-        "error_color": "#dc2626"
+        "error_color": "#f90505"
       }
     }
   },

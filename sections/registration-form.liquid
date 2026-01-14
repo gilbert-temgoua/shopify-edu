@@ -163,60 +163,60 @@
 </div>
 
 {% schema %}
-{
-  "name": "Registration Form",
-  "tag": "section",
-  "class": "section",
-  "settings": [
-    {
-      "type": "text",
-      "id": "title",
-      "label": "Form Title",
-      "default": "Create Account"
-    },
-    {
-      "type": "text",
-      "id": "subtitle",
-      "label": "Form Subtitle",
-      "default": "Join us"
-    },
-    {
-      "type": "checkbox",
-      "id": "show_password_requirements",
-      "label": "Show Password Requirements",
-      "default": true
-    },
-    {
-      "type": "color",
-      "id": "primary_color",
-      "label": "Primary Color",
-      "default": "#2563eb"
-    },
-    {
-      "type": "color",
-      "id": "success_color",
-      "label": "Success Color",
-      "default": "#10b981"
-    },
-    {
-      "type": "color",
-      "id": "error_color",
-      "label": "Error Color",
-      "default": "#dc2626"
-    }
-  ],
-  "presets": [
-    {
-      "name": "Registration Form",
-      "category": "Forms"
-    }
-  ]
-}
+  {
+    "name": "Registration Form",
+    "tag": "section",
+    "class": "section",
+    "settings": [
+      {
+        "type": "text",
+        "id": "title",
+        "label": "Form Title",
+        "default": "Create Account"
+      },
+      {
+        "type": "text",
+        "id": "subtitle",
+        "label": "Form Subtitle",
+        "default": "Join us"
+      },
+      {
+        "type": "checkbox",
+        "id": "show_password_requirements",
+        "label": "Show Password Requirements",
+        "default": true
+      },
+      {
+        "type": "color",
+        "id": "primary_color",
+        "label": "Primary Color",
+        "default": "#760909"
+      },
+      {
+        "type": "color",
+        "id": "success_color",
+        "label": "Success Color",
+        "default": "#10b981"
+      },
+      {
+        "type": "color",
+        "id": "error_color",
+        "label": "Error Color",
+        "default": "#dc2626"
+      }
+    ],
+    "presets": [
+      {
+        "name": "Registration Form",
+        "category": "Forms"
+      }
+    ]
+  }
 {% endschema %}
 
 <style>
-/* Dynamic Colors from Schema */
-.registration-form-section {
+  /* Dynamic Colors from Schema */
+  .registration-form-section {
   --primary-color: {{ section.settings.primary_color }};
   --success-color: {{ section.settings.success_color }};
   --error-color: {{ section.settings.error_color }};
@@ -410,7 +410,7 @@
     content: '';
     position: absolute;
     left: 50%;
-    top: 30%;
+    top: 40%;
     width: 0.25rem;
     height: 0.5rem;
     border: solid white;
@@ -814,7 +814,7 @@
     /**
      * @param {SubmitEvent} e
      */
-    async handleSubmit(e) {
+    async handleSubmit(e) {      
       e.preventDefault();
       if (!this.form) return;
       
@@ -856,8 +856,6 @@
         email: emailEl.value.trim(),
         password: passwordEl.value
       };
-      
-      this.setFormLocked(true);
 
       try {
         const response = await this.submitRegistration(formData);
