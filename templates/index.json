@@ -39,7 +39,7 @@
         "cta_f8BJpw": {
           "type": "cta",
           "settings": {
-            "button_text": "SHOP Shirts",
+            "button_text": "SHOP SHIRTS",
             "button_url": "shopify://collections/shirts",
             "button_style": "secondary"
           }
@@ -53,15 +53,15 @@
       ],
       "name": "Hero Banner",
       "settings": {
-        "media_type": "image",
+        "media_type": "video",
         "hero_image": "shopify://shop_images/elegant-red-formal-fashion.webp",
-        "video_url": "",
-        "show_overlay": true,
-        "overlay_opacity": 25,
+        "video_url": "https://youtu.be/cIZUEuqgGQA",
+        "show_overlay": false,
+        "overlay_opacity": 0,
         "content_alignment": "center",
         "show_content_box": true,
         "box_color": "#000000",
-        "box_opacity": 80,
+        "box_opacity": 55,
         "text_color": "#ffffff",
         "text_drop_shadow": false,
         "cta_border_color": "#ffffff",
