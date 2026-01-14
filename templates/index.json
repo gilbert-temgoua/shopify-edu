@@ -284,10 +284,51 @@
         "padding-block-start": 48,
         "padding-block-end": 48
       }
+    },
+    "faq_4GcxYH": {
+      "type": "faq",
+      "blocks": {
+        "question_Fg9zQ4": {
+          "type": "question",
+          "settings": {
+            "question": "Question 2",
+            "answer": "<p>Use this text to answer questions in as much detail as possible for your customers.</p>"
+          }
+        },
+        "question_UQpeQp": {
+          "type": "question",
+          "settings": {
+            "question": "How to apply discout coupons",
+            "answer": "<p>Whenever it turns gray, you've failed. You should restart the calibration process.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "question_Fg9zQ4",
+        "question_UQpeQp"
+      ],
+      "name": "FAQ Section",
+      "settings": {
+        "heading": "Frequently asked questions"
+      }
+    },
+    "registration_form_VGBbpn": {
+      "type": "registration-form",
+      "name": "Registration Form",
+      "settings": {
+        "title": "Create Account",
+        "subtitle": "Join us",
+        "show_password_requirements": true,
+        "primary_color": "#760909",
+        "success_color": "#10b981",
+        "error_color": "#f90505"
+      }
     }
   },
   "order": [
     "hero_jVaWmY",
-    "product_list_fa6P9H"
+    "product_list_fa6P9H",
+    "faq_4GcxYH",
+    "registration_form_VGBbpn"
   ]
 }
